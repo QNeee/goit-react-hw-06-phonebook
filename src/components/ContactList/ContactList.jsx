@@ -1,13 +1,14 @@
 
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import { ContactListUl, ContactListLi, Button } from './ContactList.syled';
-export const ContactList = ({ contacts, deleteContact }) => {
+import { removeContactById } from "Redux/phonebookSlice";
+export const ContactList = () => {
+    const contacts = useSelector(state => state.phonebook.contacts.items);
+    const filter = useSelector(state => state.phonebook.contacts.filter)
+    const getFilteredContacts = contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()))
+    const dispatch = useDispatch();
     return (<ContactListUl>
-        {contacts.map(item => <ContactListLi id={item.id} key={item.id}>{item.name}:{item.number}<Button type="button" onClick={() => deleteContact(item.id)}>Delete</Button></ContactListLi>)}
+        {getFilteredContacts.map(item => <ContactListLi id={item.id} key={item.id}>{item.name}:{item.number}<Button type="button" onClick={() => dispatch(removeContactById(item.id))}>Delete</Button></ContactListLi>)}
     </ContactListUl>)
 }
 
-ContactList.propTypes = {
-    contacts: PropTypes.arrayOf(PropTypes.object).isRequired,
-    deleteContact: PropTypes.func.isRequired
-}

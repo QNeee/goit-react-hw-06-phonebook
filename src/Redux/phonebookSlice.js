@@ -32,7 +32,6 @@ export const { addContact, removeContactById, setFilterValue } = phonebookSlice.
 const persistConfig = {
     key: 'local-key',
     storage,
-    blacklist: initialState.contacts['filter']
 }
 export const persistedPhonebookReducer = persistReducer(persistConfig, phonebookSlice.reducer)
 export const getFilter = state => state.phonebook.contacts.filter;
