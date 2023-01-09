@@ -1,20 +1,33 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from 'nanoid'
 import { ContainerForm, Label, Button } from "./Form.styled";
-import PropTypes from "prop-types";
-export const Form = (props) => {
+import { addContact } from "Redux/phonebookSlice";
+export const Form = () => {
+    const contacts = useSelector(state => state.phonebook.contacts.items);
+    const dispatch = useDispatch();
     const [form, setForm] = useState({ name: '', number: '' });
     const inputNameId = nanoid();
     const inputNumberId = nanoid();
     const onSubmit = (e) => {
         e.preventDefault();
-        props.onSubmit(form);
-        setForm({ name: '', number: '' });
+        const newContact = {
+            id: nanoid(),
+            name: form.name,
+            number: form.number
+        }
+        const findContact = contacts.find(item => item.name.toLowerCase() === form.name.toLowerCase())
+
+        if (!findContact) {
+            dispatch(addContact(newContact));
+            return setForm({ name: '', number: '' });
+        }
+        return alert(`${form.name} is already in list`);
+
     }
     const inputHandler = (e) => {
         const { name, value } = e.target;
         setForm(prev => ({
-
             ...prev,
             [name]: value,
 
@@ -46,8 +59,4 @@ export const Form = (props) => {
         <Button type="submit">Add Contact</Button>
     </ContainerForm>);
 }
-Form.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-};
-
 
