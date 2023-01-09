@@ -35,3 +35,4 @@ const persistConfig = {
 }
 export const persistedPhonebookReducer = persistReducer(persistConfig, phonebookSlice.reducer)
 export const getFilter = state => state.phonebook.contacts.filter;
+export const getContacts = state => state.phonebook.contacts.items;

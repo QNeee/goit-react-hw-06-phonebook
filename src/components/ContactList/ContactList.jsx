@@ -1,9 +1,9 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { ContactListUl, ContactListLi, Button } from './ContactList.syled';
-import { removeContactById, getFilter } from "Redux/phonebookSlice";
+import { removeContactById, getFilter, getContacts } from "Redux/phonebookSlice";
 export const ContactList = () => {
-    const contacts = useSelector(state => state.phonebook.contacts.items);
+    const contacts = useSelector(getContacts);
     const filter = useSelector(getFilter);
     const getFilteredContacts = contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()))
     const dispatch = useDispatch();
